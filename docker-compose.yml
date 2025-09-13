@@ -14,7 +14,6 @@ services:
 
   springboot-service:
     image: rajayb/springboot-app:latest
-    build: ./springboot-app
     depends_on:
       mysql-db:
         condition: service_healthy
@@ -29,7 +28,6 @@ services:
 
   flask-service:
     image: rajayb/flask-app:latest
-    build: ./flask-app
     ports:
       - "5000:5000"
     depends_on:
