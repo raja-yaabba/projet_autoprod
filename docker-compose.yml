@@ -30,14 +30,4 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - mongo-db
-
-  mongo-db:
-    image: mongo:4.4
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-
-  volumes:
-    mongo-data:
+      - mysql-db
