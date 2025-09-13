@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDoList (Spring Boot)</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ToDoList (Spring Boot)</h1>
+        <ul class="task-list">
+            <th:block th:each="user : ${users}">
+                <li class="task">
+                    <div>
+                        <span class="task-title" th:text="${user.name}"></span>
+                        <span class="task-desc" th:text="${user.email}"></span>
+                    </div>
+                    <div>
+                        <form th:action="@{/delete/{id}(id=${user.id})}" method="post">
+                            <button type="submit" class="delete-button">Supprimer</button>
+                        </form>
+                    </div>
+                </li>
+            </th:block>
+        </ul>
+
+        <form th:action="@{/add}" method="post" class="task-form">
+            <input type="text" name="name" class="input-title" placeholder="Nom" required>
+            <input type="text" name="email" class="input-desc" placeholder="Email" required>
+            <button type="submit" class="submit-button">Ajouter</button>
+        </form>
+    </div>
+</body>
+</html>
