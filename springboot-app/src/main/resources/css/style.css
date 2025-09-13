@@ -1,127 +1,124 @@
+/* ----- Reset ----- */
+body, h1, ul, li, form, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ----- Body ----- */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
     color: #333;
-    margin: 0;
-    padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px;
 }
 
+/* ----- Container ----- */
 .container {
     background: #fff;
     padding: 2em;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     width: 100%;
     max-width: 600px;
 }
 
+/* ----- Title ----- */
 h1 {
     text-align: center;
-    margin-bottom: 1em;
-    font-size: 24px;
     color: #774caf;
+    margin-bottom: 20px;
 }
 
+/* ----- List ----- */
 .task-list {
     list-style: none;
-    padding: 0;
-    margin-bottom: 1em;
+    margin-bottom: 20px;
 }
 
-.task {
+.task-list li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5em 0;
-    border-bottom: 1px solid #ddd;
-    border-radius: 4px;
+    background: #fafafa;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    transition: background 0.2s;
+}
+
+.task-list li:hover {
+    background: #f0ebff;
 }
 
 .task-title {
     font-weight: bold;
-    padding: 20px;
+    color: #333;
 }
 
 .task-desc {
     color: #666;
+    font-size: 0.9em;
+    margin-left: 10px;
 }
 
-.task-status {
-    font-style: italic;
-}
-
-.task-completed {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-}
-
-.task-not-completed {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-}
-
-.delete-form, .edit-form, .check-form {
+/* ----- Forms inside list ----- */
+.delete-form, .edit-form {
     display: inline-block;
-    margin: 0;
+    margin-left: 5px;
 }
 
-.delete-button, .edit-button, .check-button {
-    background-color: #774caf;
-    color: white;
+button {
     border: none;
-    border-radius: 4px;
-    padding: 0.5em 1em;
+    border-radius: 5px;
+    padding: 6px 12px;
     cursor: pointer;
-    margin-left: 0.5em;
+    font-size: 0.9em;
+    transition: background 0.2s;
 }
 
-.delete-button:hover, .edit-button:hover, .check-button:hover {
-    background-color: #5e3b8f;
+/* Buttons */
+.delete-button {
+    background: #e74c3c;
+    color: #fff;
+}
+.delete-button:hover {
+    background: #c0392b;
 }
 
 .edit-button {
-    background-color: #4caf50;
+    background: #4caf50;
+    color: #fff;
 }
-
 .edit-button:hover {
-    background-color: #388e3c;
-}
-
-.check-button {
-    background-color: #ff9800;
-}
-
-.check-button:hover {
-    background-color: #e68900;
-}
-
-.task-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.input-title, .input-desc {
-    padding: 0.5em;
-    margin-bottom: 1em;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+    background: #388e3c;
 }
 
 .submit-button {
-    padding: 0.75em;
-    background-color: #774caf;
+    background: #774caf;
     color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
+    margin-top: 10px;
+}
+.submit-button:hover {
+    background: #5e3b8f;
 }
 
-.submit-button:hover {
-    background-color: #5e3b8f;
+/* ----- Add form ----- */
+.task-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.task-form input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
 }
