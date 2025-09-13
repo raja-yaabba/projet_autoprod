@@ -1,4 +1,7 @@
 import pytest
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
 from controller import app, db, Task
 
 # Utilisation d'une base de données de test
