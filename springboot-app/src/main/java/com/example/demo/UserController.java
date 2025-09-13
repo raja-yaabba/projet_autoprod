@@ -24,7 +24,8 @@ public class UserController {
 
     // Ajouter un utilisateur
     @PostMapping("/add")
-    public String add(@RequestParam String name, @RequestParam String email) {
+    public String add(@RequestParam("name") String name,
+                      @RequestParam("email") String email) {
         UserEntity user = new UserEntity(name, email);
         userRepository.save(user);
         return "redirect:/";
@@ -32,14 +33,14 @@ public class UserController {
 
     // Supprimer un utilisateur
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable("id") Long id) {
         userRepository.deleteById(id);
         return "redirect:/";
     }
 
     // Charger la page d’édition
     @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable Long id, Model model) {
+    public String editForm(@PathVariable("id") Long id, Model model) {
         UserEntity user = userRepository.findById(id).orElse(null);
         if (user == null) {
             return "redirect:/"; // évite erreur si id inexistant
@@ -50,9 +51,9 @@ public class UserController {
 
     // Sauvegarder la modification
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id,
-                       @RequestParam String name,
-                       @RequestParam String email) {
+    public String edit(@PathVariable("id") Long id,
+                       @RequestParam("name") String name,
+                       @RequestParam("email") String email) {
         UserEntity user = userRepository.findById(id).orElse(null);
         if (user != null) {
             user.setName(name);
