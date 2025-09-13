@@ -13,6 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # --- SPRING BOOT ---
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -23,18 +24,21 @@ jobs:
         working-directory: ./springboot-app
         run: mvn -B -e -q test package
 
+      # --- FLASK ---
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install Flask deps (if requirements.txt exists)
+      - name: Install Flask deps & run tests
         working-directory: ./flask-app
+        env:
+          CI: "true"   # active SQLite fallback dans controller.py
         run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          # Add your pytest/unittest command below if you have tests
-          echo "No Python tests configured."
+          pytest -v
 
+      # --- DOCKER HUB ---
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:

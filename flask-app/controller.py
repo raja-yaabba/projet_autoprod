@@ -1,11 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for
 from model import db, Task
+import os
 
 app = Flask(__name__)
 
-# Connexion MySQL via SQLAlchemy
+# Connexion MySQL via SQLAlchemy par défaut
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://root:root@mysql-db:3306/demo"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Fallback SQLite si on est en CI (GitHub Actions)
+if os.getenv("CI") == "true":
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
 
 db.init_app(app)
 
