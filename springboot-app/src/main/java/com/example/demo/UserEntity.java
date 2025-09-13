@@ -3,7 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users") // évite conflits avec mot-clé "user" en SQL
+@Table(name = "user_entity")
 public class UserEntity {
 
     @Id
