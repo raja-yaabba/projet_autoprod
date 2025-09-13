@@ -30,7 +30,7 @@ def test_index(client):
     assert response.status_code == 200
     # La page doit s'afficher même si aucune tâche n'existe
     data = response.data.decode('utf-8')
-    assert "Tâches" in data or "Utilisateurs" in data
+    assert "ToDoList" in data
 
 
 def test_add_task(client):
