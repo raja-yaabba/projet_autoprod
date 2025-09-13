@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDoList</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>ToDoList</h1>
+        <ul class="task-list">
+            {% for task in tasks %}
+            <li class="task {% if task.completed %}task-completed{% else %}task-not-completed{% endif %}">
+            <div>
+                <span class="task-title">{{ task.task }}</span>
+                <span class="task-desc">{{ task.description }}</span>
+            </div>
+            <div>
+                <form action="{{ url_for('check', task_id=task._id) }}" method="get" class="check-form">
+                <button type="submit" class="check-button">Check</button>
+                </form>
+                <form action="{{ url_for('edit', task_id=task._id) }}" method="get" class="edit-form">
+                <button type="submit" class="edit-button">Edit</button>
+                </form>
+                <form action="{{ url_for('delete', task_id=task._id) }}" method="post" class="delete-form">
+                <button type="submit" class="delete-button">Supprimer</button>
+                </form>
+            </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <form action="{{ url_for('add') }}" method="post" class="task-form">
+            <input type="text" name="task" class="input-title" placeholder="Task Title" required>
+            <input type="text" name="description" class="input-desc" placeholder="Task Description" required>
+            <button type="submit" class="submit-button">Ajouter</button>
+        </form>
+    </div>
+</body>
+</html>
