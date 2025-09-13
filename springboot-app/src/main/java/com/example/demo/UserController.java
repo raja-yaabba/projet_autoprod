@@ -7,11 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class UserWebController {
+public class UserController {
 
     private final UserRepository userRepository;
 
-    public UserWebController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
