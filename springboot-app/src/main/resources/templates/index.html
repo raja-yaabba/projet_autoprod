@@ -9,9 +9,14 @@
 <div class="container">
     <h1>Utilisateurs</h1>
 
+    <!-- Afficher un message si la liste est vide -->
+    <div th:if="${#lists.isEmpty(users)}">
+        <p>Aucun utilisateur enregistré.</p>
+    </div>
+
     <!-- Liste des utilisateurs -->
-    <ul class="task-list">
-        <li th:each="user : ${users}" th:if="${user != null}">
+    <ul class="task-list" th:if="${!#lists.isEmpty(users)}">
+        <li th:each="user : ${users}">
             <span class="task-title" th:text="${user.name}">Nom</span>
             <span class="task-desc" th:text="${user.email}">Email</span>
 

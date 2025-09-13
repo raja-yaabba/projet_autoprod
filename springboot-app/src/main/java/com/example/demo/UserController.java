@@ -1,5 +1,7 @@
-package com.example.demo;
+package com.example.demo.controller;
 
+import com.example.demo.entity.UserEntity;
+import com.example.demo.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +15,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    // Page d’accueil
+    // Page d’accueil : liste des utilisateurs
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("users", userRepository.findAll());
@@ -23,9 +25,7 @@ public class UserController {
     // Ajouter un utilisateur
     @PostMapping("/add")
     public String add(@RequestParam String name, @RequestParam String email) {
-        UserEntity user = new UserEntity();
-        user.setName(name);
-        user.setEmail(email);
+        UserEntity user = new UserEntity(name, email);
         userRepository.save(user);
         return "redirect:/";
     }
@@ -37,14 +37,18 @@ public class UserController {
         return "redirect:/";
     }
 
-    // Modifier un utilisateur
+    // Charger la page d’édition
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
         UserEntity user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return "redirect:/"; // évite erreur si id inexistant
+        }
         model.addAttribute("user", user);
         return "edit";
     }
 
+    // Sauvegarder la modification
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable Long id,
                        @RequestParam String name,

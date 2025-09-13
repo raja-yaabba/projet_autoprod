@@ -8,7 +8,15 @@
 <body>
 <div class="container">
     <h1>Modifier Utilisateur</h1>
-    <form th:action="@{/edit/{id}(id=${user.id})}" method="post" class="task-form">
+
+    <!-- Si l'utilisateur n'existe pas -->
+    <div th:if="${user == null}">
+        <p style="color: red;">Utilisateur introuvable.</p>
+        <a th:href="@{/}" class="submit-button">Retour à la liste</a>
+    </div>
+
+    <!-- Formulaire d’édition si l'utilisateur existe -->
+    <form th:if="${user != null}" th:action="@{/edit/{id}(id=${user.id})}" method="post" class="task-form">
         <input type="text" name="name" class="input-title" th:value="${user.name}" required>
         <input type="text" name="email" class="input-desc" th:value="${user.email}" required>
         <button type="submit" class="submit-button">Enregistrer</button>
