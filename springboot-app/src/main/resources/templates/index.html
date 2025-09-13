@@ -20,11 +20,15 @@
             </form>
         </li>
     </ul>
-    <form action="/add" method="post" class="task-form">
+    <form th:action="@{/add}" method="post" class="task-form"></form>
         <input type="text" name="name" class="input-title" placeholder="Nom" required>
         <input type="text" name="email" class="input-desc" placeholder="Email" required>
         <button type="submit" class="submit-button">Ajouter</button>
     </form>
+    <form th:action="@{/delete/{id}(id=${user.id})}" method="post" class="delete-form">
+        <button type="submit" class="delete-button">Supprimer</button>
+    </form>
+
 </div>
 </body>
 </html>
