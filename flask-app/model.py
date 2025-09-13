@@ -1,35 +1,38 @@
-import uuid
-
-class Task:
-    def __init__(self, task, description):
-        self._id = str(uuid.uuid4())
-        self.task = task
-        self.description = description
-        self.completed = False
+from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 class TaskDB:
-    def __init__(self):
-        self.tasks = []
+    def __init__(self, uri="mongodb://mongo-db:27017/", db_name="todolist"):
+        self.client = MongoClient(uri)
+        self.db = self.client[db_name]
+        self.collection = self.db["tasks"]
 
     def get_all_tasks(self):
-        return self.tasks
+        return list(self.collection.find())
 
     def get_task(self, task_id):
-        return next((t for t in self.tasks if t._id == task_id), None)
+        return self.collection.find_one({"_id": ObjectId(task_id)})
 
     def add_task(self, task, description):
-        self.tasks.append(Task(task, description))
+        return self.collection.insert_one({
+            "task": task,
+            "description": description,
+            "completed": False
+        })
 
     def toggle_task(self, task_id):
         task = self.get_task(task_id)
         if task:
-            task.completed = not task.completed
+            self.collection.update_one(
+                {"_id": ObjectId(task_id)},
+                {"$set": {"completed": not task.get("completed", False)}}
+            )
 
     def update_task(self, task_id, task_title, description):
-        task = self.get_task(task_id)
-        if task:
-            task.task = task_title
-            task.description = description
+        self.collection.update_one(
+            {"_id": ObjectId(task_id)},
+            {"$set": {"task": task_title, "description": description}}
+        )
 
     def delete_task(self, task_id):
-        self.tasks = [t for t in self.tasks if t._id != task_id]
+        self.collection.delete_one({"_id": ObjectId(task_id)})

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from model import Task, TaskDB
+from model import TaskDB
 
 app = Flask(__name__)
 db = TaskDB()
