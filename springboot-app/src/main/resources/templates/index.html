@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>ToDoList Utilisateurs</title>
@@ -8,27 +8,31 @@
 <body>
 <div class="container">
     <h1>Utilisateurs</h1>
+
+    <!-- Liste des utilisateurs -->
     <ul class="task-list">
-        <li th:each="user : ${users}">
+        <li th:each="user : ${users}" th:if="${user != null}">
             <span class="task-title" th:text="${user.name}">Nom</span>
             <span class="task-desc" th:text="${user.email}">Email</span>
+
+            <!-- Supprimer -->
             <form th:action="@{/delete/{id}(id=${user.id})}" method="post" class="delete-form">
                 <button type="submit" class="delete-button">Supprimer</button>
             </form>
+
+            <!-- Modifier -->
             <form th:action="@{/edit/{id}(id=${user.id})}" method="get" class="edit-form">
                 <button type="submit" class="edit-button">Modifier</button>
             </form>
         </li>
     </ul>
-    <form th:action="@{/add}" method="post" class="task-form"></form>
+
+    <!-- Ajouter un utilisateur -->
+    <form th:action="@{/add}" method="post" class="task-form">
         <input type="text" name="name" class="input-title" placeholder="Nom" required>
         <input type="text" name="email" class="input-desc" placeholder="Email" required>
         <button type="submit" class="submit-button">Ajouter</button>
     </form>
-    <form th:action="@{/delete/{id}(id=${user.id})}" method="post" class="delete-form">
-        <button type="submit" class="delete-button">Supprimer</button>
-    </form>
-
 </div>
 </body>
 </html>
