@@ -1,6 +1,9 @@
 import pytest
 from controller import app, db, Task
 
+# Utilisation d'une base de données de test
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://root:root@mysql-db:3306/demo_test"
+
 @pytest.fixture
 def client():
     # Mode test activé
