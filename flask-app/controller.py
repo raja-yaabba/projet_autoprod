@@ -29,7 +29,7 @@ def add():
 
 @app.route("/check/<int:task_id>")
 def check(task_id):
-    task = Task.query.get(task_id)
+    task = db.session.get(Task, task_id)
     if task:
         task.completed = not task.completed
         db.session.commit()
@@ -37,7 +37,7 @@ def check(task_id):
 
 @app.route("/edit/<int:task_id>", methods=["GET", "POST"])
 def edit(task_id):
-    task = Task.query.get(task_id)
+    task = db.session.get(Task, task_id)
     if request.method == "POST":
         task.task = request.form["task"]
         task.description = request.form["description"]
@@ -47,7 +47,7 @@ def edit(task_id):
 
 @app.route("/delete/<int:task_id>", methods=["POST"])
 def delete(task_id):
-    task = Task.query.get(task_id)
+    task = db.session.get(Task, task_id)
     if task:
         db.session.delete(task)
         db.session.commit()
