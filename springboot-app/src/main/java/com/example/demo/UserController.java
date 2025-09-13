@@ -1,7 +1,5 @@
-package com.example.springbootapp.controller;
+package com.example.demo;
 
-import com.example.springbootapp.model.User;
-import com.example.springbootapp.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +13,48 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    // Page d’accueil
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("users", userRepository.findAll());
-        return "index"; // templates/index.html
+        return "index";
     }
 
+    // Ajouter un utilisateur
     @PostMapping("/add")
-    public String addUser(@RequestParam String name, @RequestParam String email) {
-        userRepository.save(new User(name, email));
+    public String add(@RequestParam String name, @RequestParam String email) {
+        UserEntity user = new UserEntity();
+        user.setName(name);
+        user.setEmail(email);
+        userRepository.save(user);
         return "redirect:/";
     }
 
+    // Supprimer un utilisateur
     @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
+    public String delete(@PathVariable Long id) {
         userRepository.deleteById(id);
+        return "redirect:/";
+    }
+
+    // Modifier un utilisateur
+    @GetMapping("/edit/{id}")
+    public String editForm(@PathVariable Long id, Model model) {
+        UserEntity user = userRepository.findById(id).orElse(null);
+        model.addAttribute("user", user);
+        return "edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable Long id,
+                       @RequestParam String name,
+                       @RequestParam String email) {
+        UserEntity user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.setName(name);
+            user.setEmail(email);
+            userRepository.save(user);
+        }
         return "redirect:/";
     }
 }

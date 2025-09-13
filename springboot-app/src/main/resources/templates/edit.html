@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier Utilisateur</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Modifier Utilisateur</h1>
+    <form th:action="@{/edit/{id}(id=${user.id})}" method="post" class="task-form">
+        <input type="text" name="name" class="input-title" th:value="${user.name}" required>
+        <input type="text" name="email" class="input-desc" th:value="${user.email}" required>
+        <button type="submit" class="submit-button">Enregistrer</button>
+    </form>
+</div>
+</body>
+</html>
