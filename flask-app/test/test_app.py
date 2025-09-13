@@ -1,33 +1,73 @@
 import pytest
-from flask import Flask
+from controller import app, db, Task
 
 @pytest.fixture
 def client():
+    # Mode test activé
     app.config['TESTING'] = True
+
     with app.test_client() as client:
+        with app.app_context():
+            # Reset DB tables avant chaque test
+            db.drop_all()
+            db.create_all()
         yield client
+
+        # Nettoyage après
+        with app.app_context():
+            db.drop_all()
+
 
 def test_index(client):
     """Test de la page d’accueil"""
     response = client.get('/')
     assert response.status_code == 200
-    assert b"Utilisateurs" in response.data  # vérifie que le mot apparait dans la page
+    # La page doit s'afficher même si aucune tâche n'existe
+    data = response.data.decode('utf-8')
+    assert "Tâches" in data or "Utilisateurs" in data
 
-def test_add_user(client):
-    """Test de l’ajout d’un utilisateur"""
-    response = client.post('/add', data={'name': 'Alice', 'email': 'alice@example.com'}, follow_redirects=True)
+
+def test_add_task(client):
+    """Test ajout d’une tâche"""
+    response = client.post(
+        "/add",
+        data={"task": "Faire les courses", "description": "Acheter du lait"},
+        follow_redirects=True
+    )
     assert response.status_code == 200
-    assert b"Alice" in response.data
+    assert b"Faire les courses" in response.data
+    assert b"Acheter du lait" in response.data
 
-def test_delete_user(client):
-    """Test suppression utilisateur"""
-    # Ajoute un utilisateur d’abord
-    client.post('/add', data={'name': 'Bob', 'email': 'bob@example.com'}, follow_redirects=True)
 
-    # Récupère la page et trouve l’ID de Bob
-    response = client.get('/')
-    assert b"Bob" in response.data
+def test_edit_task(client):
+    """Test modification tâche"""
+    # Ajout d'une tâche
+    client.post("/add", data={"task": "Ancien titre", "description": "Ancienne desc"}, follow_redirects=True)
 
-    # Exemple si delete prend en param l’id = 1
-    response = client.post('/delete/1', follow_redirects=True)
+    with app.app_context():
+        task = Task.query.first()
+        assert task is not None
+        task_id = task.id
+
+    # Edition
+    response = client.post(
+        f"/edit/{task_id}",
+        data={"task": "Nouveau titre", "description": "Nouvelle desc"},
+        follow_redirects=True
+    )
     assert response.status_code == 200
+    assert b"Nouveau titre" in response.data
+
+
+def test_delete_task(client):
+    """Test suppression tâche"""
+    client.post("/add", data={"task": "A supprimer", "description": "test"}, follow_redirects=True)
+
+    with app.app_context():
+        task = Task.query.first()
+        assert task is not None
+        task_id = task.id
+
+    response = client.post(f"/delete/{task_id}", follow_redirects=True)
+    assert response.status_code == 200
+    assert b"A supprimer" not in response.data
