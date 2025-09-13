@@ -16,13 +16,13 @@
                 <span class="task-desc">{{ task.description }}</span>
             </div>
             <div>
-                <form action="{{ url_for('check', task_id=task._id) }}" method="get" class="check-form">
+                <form action="{{ url_for('check', task_id=task.id) }}" method="get" class="check-form">
                 <button type="submit" class="check-button">Check</button>
                 </form>
-                <form action="{{ url_for('edit', task_id=task._id) }}" method="get" class="edit-form">
+                <form action="{{ url_for('edit', task_id=task.id) }}" method="get" class="edit-form">
                 <button type="submit" class="edit-button">Edit</button>
                 </form>
-                <form action="{{ url_for('delete', task_id=task._id) }}" method="post" class="delete-form">
+                <form action="{{ url_for('delete', task_id=task.id) }}" method="post" class="delete-form">
                 <button type="submit" class="delete-button">Supprimer</button>
                 </form>
             </div>
